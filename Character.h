@@ -64,7 +64,7 @@ public:
     virtual void OfferWeapon(std::unique_ptr<Character>& monster);  // For Player only
     virtual const Weapon& Loot() const;                             // For Monster only
     virtual const MonsterType& Type() const;                        // For Monster only
-    const uint64_t& Damage() const;                                 // For Monster only
+    //const uint64_t& Damage() const;                                 // For Monster only
 
 protected:
     uint64_t hp;

@@ -60,9 +60,10 @@ const Weapon& Character::Loot() const {    // For Monster only
 const MonsterType& Character::Type() const {
     return MonsterType::Golem;
 }
+/*
 const uint64_t& Character::Damage() const {
     return 666; //To check whether this is ever called!
-}
+}*/
 
 Player::Player() : Character(), weapon(), rogue_level(0), warrior_level(0), barbarian_level(0) {}
 

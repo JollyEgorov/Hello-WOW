@@ -39,24 +39,24 @@ std::list<Damage> BeautifyEffects(const std::list<Damage>& temp_eff_dmg) {
     return result_eff_dmg;
 }
 
-std::list<Damage> OffEffectsCheck(const std::unique_ptr<Character>& entity, const std::unique_ptr<Character>& opposing_entity) {
+std::list<Damage> OffEffectsCheck(std::unique_ptr<Character>& entity, std::unique_ptr<Character>& opposing_entity) {
     std::list<Damage> result_eff_dmg;
-    
-    //ƒобавл€ем урон от оружи€ + значение силы персонажа
-    if (typeid(*entity) == typeid(Player)) {
-        result_eff_dmg.push_back(Damage(entity->CurrentWeapon().DType(), (entity->CurrentWeapon().DValue() + entity->Str())));
+
+    if (!entity || !opposing_entity) {
+        return result_eff_dmg;  // nullptr protection
+    }
+
+    //ƒобавл€ем урон от оружи€ (+ значение силы персонажа) 
+    if (Player* player = dynamic_cast<Player*>(entity.get())) {
+        result_eff_dmg.push_back(Damage(player->CurrentWeapon().DType(), (player->CurrentWeapon().DValue() + player->Str())));
         std::cerr << "Weapon damage = " << result_eff_dmg.front().DValue() << '\n';
     }
-    else if (typeid(*entity) == typeid(Monster)) {
-        result_eff_dmg.push_back(Damage(DamageType::Pure, entity->Damage()));
+    else if (Monster* monster = dynamic_cast<Monster*>(entity.get())) {
+        result_eff_dmg.push_back(Damage(DamageType::Pure, monster->Damage()));
         std::cerr << "Monster damage = " << result_eff_dmg.front().DValue() << '\n';
     }
     else {
         std::cerr << "Non player/monster character spotted!!!!!!!!!\n";
-    }
-
-    if (!entity || !opposing_entity) {
-        return result_eff_dmg;  // nullptr protection
     }
 
     if (!entity->ActiveOffEffects().empty()) {
@@ -82,6 +82,7 @@ std::list<Damage> OffEffectsCheck(const std::unique_ptr<Character>& entity, cons
             }
         }
     }
+    
     return BeautifyEffects(result_eff_dmg);
 }
 

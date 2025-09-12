@@ -5,7 +5,7 @@ Damage SubstractDMG(const std::list<Damage> dlist, DamageType dt, Damage ddealt)
 	return Damage(dt, ddealt.DValue() - pos->DValue());
 }
 
-bool CalculateHit(std::unique_ptr<Character>& attacker, std::unique_ptr<Character>& defending) {
+bool CalculateHit(Character* attacker, Character* defending) {
 	uint64_t rand = Random(1, attacker->Dex() + defending->Dex());
 	if (rand <= defending->Dex()) {		
 		return false;
@@ -15,7 +15,7 @@ bool CalculateHit(std::unique_ptr<Character>& attacker, std::unique_ptr<Characte
 
 uint64_t CalculateDMG(std::unique_ptr<Character>& attacker, std::unique_ptr<Character>& defending) {
 	uint64_t calc_result = 0;
-
+	
 	std::list<Damage> off_effects = OffEffectsCheck(attacker, defending);
 	std::list<Damage> def_effects = DefEffectsCheck(defending, defending, off_effects);
 	std::list<Damage> resulting_dmg;
@@ -45,7 +45,15 @@ uint64_t CalculateDMG(std::unique_ptr<Character>& attacker, std::unique_ptr<Char
 	return calc_result;
 }
 
-std::pair<std::unique_ptr<Character>&, std::unique_ptr<Character>&> TurnOrder(std::unique_ptr<Character>& player, std::unique_ptr<Character>& monster) {
-	if (player->Dex() >= monster->Dex()) return std::pair<std::unique_ptr<Character>&, std::unique_ptr<Character>&>(player, monster);
-	else return std::pair<std::unique_ptr<Character>&, std::unique_ptr<Character>&>(monster, player);
+std::pair<Character*, Character*> TurnOrder(std::unique_ptr<Character>& player, std::unique_ptr<Character>& monster) {
+	if (!player || !monster) {
+		return { nullptr, nullptr };
+	}
+
+	if (player->Dex() >= monster->Dex()) {
+		return { player.get(), monster.get() };
+	}
+	else {
+		return { monster.get(), player.get() };
+	}
 }

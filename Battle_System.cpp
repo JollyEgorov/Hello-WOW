@@ -1,6 +1,6 @@
 #include "Battle_System.h"
 
-void Action(std::unique_ptr<Character>& attacker, std::unique_ptr<Character>& defending) {
+void Action(Character* attacker, Character* defending) {
 	if (CalculateHit(attacker, defending)) {
 		std::cout << attacker->GetType() << " gets a hit on " << defending->GetType() << "\n"; //DEBUG?
 		uint64_t damage_to_hp = CalculateDMG(attacker, defending);
@@ -17,14 +17,15 @@ std::unique_ptr<Character>& Fight(std::unique_ptr<Character>& player, std::uniqu
 
 	auto turn_pair = TurnOrder(player, monster);
 
-	std::unique_ptr<Character>& attacker = turn_pair.first;
-	std::unique_ptr<Character>& defending = turn_pair.second;
+	Character* attacker = turn_pair.first;
+	Character* defending = turn_pair.second;
 
 	while (attacker->HP() != 0 || defending->HP() != 0) { //Returns the winner
 		Action(attacker, defending);
 		if (defending->HP() == 0) {
-			return attacker;
+			break;
 		}
 		std::swap(attacker, defending);
 	}
+	return attacker;
 }

@@ -8,4 +8,4 @@ bool CalculateHit(std::unique_ptr<Character>& attacker, std::unique_ptr<Characte
 
 uint64_t CalculateDMG(std::unique_ptr<Character>& attacker, std::unique_ptr<Character>& defending);
 
-std::pair<std::unique_ptr<Character>&, std::unique_ptr<Character>&> TurnOrder(std::unique_ptr<Character>& player, std::unique_ptr<Character>& monster);
+std::pair<Character*, Character*> TurnOrder(std::unique_ptr<Character>& player, std::unique_ptr<Character>& monster);
