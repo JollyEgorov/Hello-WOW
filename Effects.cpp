@@ -41,7 +41,19 @@ std::list<Damage> BeautifyEffects(const std::list<Damage>& temp_eff_dmg) {
 
 std::list<Damage> OffEffectsCheck(const std::unique_ptr<Character>& entity, const std::unique_ptr<Character>& opposing_entity) {
     std::list<Damage> result_eff_dmg;
-    std::list<Damage> temp_eff_dmg;
+    
+    //ƒобавл€ем урон от оружи€ + значение силы персонажа
+    if (typeid(*entity) == typeid(Player)) {
+        result_eff_dmg.push_back(Damage(entity->CurrentWeapon().DType(), (entity->CurrentWeapon().DValue() + entity->Str())));
+        std::cerr << "Weapon damage = " << result_eff_dmg.front().DValue() << '\n';
+    }
+    else if (typeid(*entity) == typeid(Monster)) {
+        result_eff_dmg.push_back(Damage(DamageType::Pure, entity->Damage()));
+        std::cerr << "Monster damage = " << result_eff_dmg.front().DValue() << '\n';
+    }
+    else {
+        std::cerr << "Non player/monster character spotted!!!!!!!!!\n";
+    }
 
     if (!entity || !opposing_entity) {
         return result_eff_dmg;  // nullptr protection
@@ -51,19 +63,19 @@ std::list<Damage> OffEffectsCheck(const std::unique_ptr<Character>& entity, cons
         for (const auto& effect : entity->ActiveOffEffects()) {
             switch (effect) {
             case EffectType::enumBackStab :
-                temp_eff_dmg.push_back(BackStab(*entity, *opposing_entity));
+                result_eff_dmg.push_back(BackStab(*entity, *opposing_entity));
                 break;
             case EffectType::enumPoisoned :
-                temp_eff_dmg.push_back(Poisoned());
+                result_eff_dmg.push_back(Poisoned());
                 break;
             case EffectType::enumToAction :
-                temp_eff_dmg.push_back(ToAction(*entity));
+                result_eff_dmg.push_back(ToAction(*entity));
                 break;
             case EffectType::enumFury :
-                temp_eff_dmg.push_back(Fury());
+                result_eff_dmg.push_back(Fury());
                 break;
             case EffectType::enumDragon_skill :
-                temp_eff_dmg.push_back(Dragon_skill());
+                result_eff_dmg.push_back(Dragon_skill());
                 break;
             default:
                 break;

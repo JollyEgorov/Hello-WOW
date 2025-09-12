@@ -60,6 +60,9 @@ const Weapon& Character::Loot() const {    // For Monster only
 const MonsterType& Character::Type() const {
     return MonsterType::Golem;
 }
+const uint64_t& Character::Damage() const {
+    return 666; //To check whether this is ever called!
+}
 
 Player::Player() : Character(), weapon(), rogue_level(0), warrior_level(0), barbarian_level(0) {}
 
@@ -83,7 +86,7 @@ Player::Player(const uint64_t& strength_, const uint64_t& dexterity_, const uint
         barbarian_level = 1;
         off_effects.insert(end(off_effects), EffectType::enumFury);
     }
-    hp = rogue_level * 4 + warrior_level * 5 + barbarian_level * 6 + vitality_;
+    hp = rogue_level * 4 + warrior_level * 5 + barbarian_level * 6 + Vitality;
     std::cout << "You now have " << hp << " hp\n"; //DEBUG?
 }
 
@@ -144,6 +147,8 @@ void Player::LevelUp() {
                     break;
                 }
             }
+
+            hp = rogue_level * 4 + warrior_level * 5 + barbarian_level * 6 + Vitality;
         }
     }
     else {

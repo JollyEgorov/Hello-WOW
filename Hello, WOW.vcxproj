@@ -138,6 +138,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Battle_System.h" />
+    <ClInclude Include="Character.h" />
     <ClInclude Include="Character_creator.h" />
     <ClInclude Include="Character_turn.h" />
     <ClInclude Include="Damage.h" />

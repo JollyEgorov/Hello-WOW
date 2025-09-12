@@ -80,5 +80,8 @@
     <ClInclude Include="Character_turn.h">
       <Filter>Исходные файлы</Filter>
     </ClInclude>
+    <ClInclude Include="Character.h">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

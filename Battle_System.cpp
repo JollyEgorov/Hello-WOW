@@ -2,11 +2,13 @@
 
 void Action(std::unique_ptr<Character>& attacker, std::unique_ptr<Character>& defending) {
 	if (CalculateHit(attacker, defending)) {
+		std::cout << attacker->GetType() << " gets a hit on " << defending->GetType() << "\n"; //DEBUG?
 		uint64_t damage_to_hp = CalculateDMG(attacker, defending);
 		defending->HP() -= damage_to_hp;
 		std::cout << defending->GetType() << " takes " << damage_to_hp << " damage\n";
 		std::this_thread::sleep_for(std::chrono::milliseconds(2000));
 		}
+	std::cout << attacker->GetType() << " misses " << defending->GetType() << "\n"; //DEBUG?
 	}
 
 std::unique_ptr<Character>& Fight(std::unique_ptr<Character>& player, std::unique_ptr<Character>& monster) {

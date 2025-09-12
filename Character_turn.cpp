@@ -7,7 +7,9 @@ Damage SubstractDMG(const std::list<Damage> dlist, DamageType dt, Damage ddealt)
 
 bool CalculateHit(std::unique_ptr<Character>& attacker, std::unique_ptr<Character>& defending) {
 	uint64_t rand = Random(1, attacker->Dex() + defending->Dex());
-	if (rand <= defending->Dex()) return false;
+	if (rand <= defending->Dex()) {		
+		return false;
+	}
 	return true;
 }
 
