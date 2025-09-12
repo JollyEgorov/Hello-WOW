@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Character.h"
+#include "Effects.h"
 #include <utility>
 
 bool CalculateHit(std::unique_ptr<Character>& attacker, std::unique_ptr<Character>& defending);

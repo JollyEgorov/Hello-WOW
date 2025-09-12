@@ -20,7 +20,7 @@ public:
 
 	const WeaponType& WType();
 
-	const uint64_t& Damage();
+	const uint64_t& DValue();
 
 	const DamageType& DType();
 

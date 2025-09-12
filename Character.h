@@ -26,14 +26,14 @@ enum MonsterType {
     Dragon
 };
 
-enum Effect {
-    enumBackStab,
-    enumPoisoned,
-    enumToAction,
-    enumShield,
-    enumFury,
-    enumStoneSkin,
-    enumSkeleton_skill,
+enum EffectType {
+    enumBackStab,           
+    enumPoisoned,           
+    enumToAction,           
+    enumShield,             
+    enumFury,               
+    enumStoneSkin,          
+    enumSkeleton_skill,     
     enumSlime_skill,
     enumDragon_skill
 };
@@ -48,15 +48,30 @@ public:
 
     uint64_t& HP();
     uint64_t& Str();
+    const uint64_t& Str() const;
     uint64_t& Dex();
+    const uint64_t& Dex() const;
     uint64_t& Vit();
+    const uint64_t& Vit() const;
+    const virtual std::string GetType() const = 0;
+    std::list<EffectType> ActiveOffEffects();
+    std::list<EffectType> ActiveDefEffects();
+
+    virtual Weapon& CurrentWeapon();
+    virtual const Weapon& CurrentWeapon() const;
+
+    virtual void LevelUp(); // For Player only
+    virtual void OfferWeapon(std::unique_ptr<Character>& monster); // For Player only
+    virtual const Weapon& Loot() const; // For Monster only
+    virtual const MonsterType& Type() const;
 
 protected:
     uint64_t hp;
     uint64_t Strength;
     uint64_t Dexterity;
     uint64_t Vitality;
-    std::list<Effect> effects;
+    std::list<EffectType> off_effects;
+    std::list<EffectType> def_effects;
 };
 
 class Player : public Character{
@@ -64,14 +79,19 @@ public:
     Player();
     Player(const uint64_t& strength_, const uint64_t& dexterity_, const uint64_t& vitality_, const CharClass& st_class_);
 
+    const std::string GetType() const;
     uint64_t& Rogue_level();
     uint64_t& Warrior_level();
     uint64_t& Barbarian_level();
+    const uint64_t TotalLevel() const;
     Weapon& CurrentWeapon();
+    const Weapon& CurrentWeapon() const;
 
-    const uint64_t& TotalLevel() const;
+    void LevelUp();
+    void OfferWeapon(std::unique_ptr<Character>& monster) const;
 
 private:
+    const uint64_t PlayerLevel() const;
     uint64_t rogue_level;
     uint64_t warrior_level;
     uint64_t barbarian_level;
@@ -81,38 +101,17 @@ private:
 class Monster : public Character {
 public:
     Monster();
-    Monster(const uint64_t& hp, uint64_t base_damage_, const uint64_t& strength_, const uint64_t& dexterity_, const uint64_t& vitality_, MonsterType type_, Weapon loot_);
+    Monster(const uint64_t& hp, const uint64_t& base_damage_, const uint64_t& strength_, const uint64_t& dexterity_, const uint64_t& vitality_, const MonsterType& type_, const Weapon& loot_);
     
-    const MonsterType& Type();
-    const uint64_t& Damage();
-    const Weapon& Loot();
+    const std::string GetType() const;
+    const MonsterType& Type() const;
+    const uint64_t& Damage() const;
+    const Weapon& Loot() const;
 
 private:
     const uint64_t base_damage;
     const MonsterType type;
     const Weapon loot;
 };
-/*
-std::ostream& operator<<(std::ostream& os, CharClass cclass) { //Why can't I move it to the other file?
-    switch (cclass) {
-    case CharClass::Rogue:
-        os << "rogue";
-        break;
-    case CharClass::Warrior:
-        os << "warrior";
-        break;
-    case CharClass::Barbarian:
-        os << "barbarian";
-        break;
-    case CharClass::None:
-        os << "none";
-        break;
-    default:
-        os << "Unknown character class!"; // Handle unexpected values
-        break;
-    }
-    return os;
-}
-*/
 
 std::ostream& operator<<(std::ostream& os, MonsterType type);

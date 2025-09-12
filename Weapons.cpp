@@ -2,7 +2,7 @@
 
 Weapon::Weapon() : dtype_(DamageType::Cutting), damage_(3), wtype_(WeaponType::Sword) {}
 
-Weapon::Weapon(const WeaponType& wtype) : wtype_(wtype) {
+Weapon::Weapon(const WeaponType& wtype) : wtype_(wtype), damage_(0), dtype_(DamageType::Pure) { //Check for damage types!
 	switch (wtype) {
 	case WeaponType::Sword:
 		damage_ = 3;
@@ -32,7 +32,7 @@ const WeaponType& Weapon::WType() {
 	return wtype_;
 }
 
-const uint64_t& Weapon::Damage() {
+const uint64_t& Weapon::DValue() {
 	return damage_;
 }
 

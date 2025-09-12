@@ -8,8 +8,8 @@ std::unique_ptr<Character> Character_creation() {
     uint64_t dexterity_ = Random(1, 3);
     uint64_t vitality_ = Random(1, 3);
 
-    std::cout << RED_COLOR << "Strength: " << strength_ << '\n' << RESET_COLOR;
     std::cout << GREEN_COLOR << "Dexterity: " << dexterity_ << '\n' << RESET_COLOR;
+    std::cout << RED_COLOR << "Strength: " << strength_ << '\n' << RESET_COLOR;
     std::cout << YELLOW_COLOR << "Vitality: " << vitality_ << '\n' << RESET_COLOR;
 
     std::string player_input;
@@ -23,13 +23,13 @@ std::unique_ptr<Character> Character_creation() {
             st_class_ = CharClass::Rogue;
             std::cout << "Welcome to the dungeon, nimble rogue!\n";
         }
-        else if (player_input == "b" || player_input == "B") {
-            st_class_ = CharClass::Barbarian;
-            std::cout << "Welcome to the dungeon, furious barbarian!\n";
-        }
         else if (player_input == "w" || player_input == "W") {
             st_class_ = CharClass::Warrior;
             std::cout << "Welcome to the dungeon, mighty warrior!\n";
+        }
+        else if (player_input == "b" || player_input == "B") {
+            st_class_ = CharClass::Barbarian;
+            std::cout << "Welcome to the dungeon, furious barbarian!\n";
         }
         else {
             std::cout << "Invalid Class input, please try again\n";

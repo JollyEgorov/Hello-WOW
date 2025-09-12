@@ -1,7 +1,7 @@
 #pragma once
 #include <cstdint>
 
-enum DamageType {
+enum class DamageType {
 	Cutting,
 	Piercing,
 	Blunt, 
@@ -11,11 +11,16 @@ enum DamageType {
 class Damage {
 public:
 	Damage();
+
 	Damage(const DamageType& dtype, const uint64_t& dvalue);
 	
 	uint64_t& DValue();
 
 	DamageType& DType();
+
+	const uint64_t& DValue() const;
+
+	const DamageType& DType() const;
 	
 private:
 	DamageType dtype_;

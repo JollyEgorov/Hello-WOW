@@ -28,15 +28,27 @@ void Check_Player_Health(std::unique_ptr<Character>& player) { // Replace?
     }
 }
 
+void Defeat(std::unique_ptr<Character>& player) {
+    std::cout << "Oh, noble hero, your adventure has come to an end.\n" << "Good luck next time!\n";
+    player = nullptr;
+}
+
 int main()
 {
     
    auto player = Spawn_player();
     while (GameState::getInstance().getEnemiesDefeated() != 5) {
         auto monster = Spawn_monster();
-        std::this_thread::sleep_for(std::chrono::seconds(2));
-        Fight(player, monster);
-        Check_Player_Health(player);
+        std::this_thread::sleep_for(std::chrono::seconds(2)); //DEBUG
+        if (Fight(player, monster) == player) {
+            player->LevelUp();
+            player->OfferWeapon(monster);
+            //Check_Player_Health(player);
+        }
+        else {
+            Defeat(player);
+            player = Spawn_player();
+        }
     }
     std::cout << "Congrats, you've beat the game!\n";
     return 0;
