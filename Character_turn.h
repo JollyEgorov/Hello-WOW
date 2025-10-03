@@ -1,8 +1,9 @@
 #pragma once
+#include <utility>
+#include <algorithm>
 
 #include "Character.h"
 #include "Effects.h"
-#include <utility>
 
 Damage SubstractDMG(const std::list<Damage>::iterator pos, Damage dblocked);
 

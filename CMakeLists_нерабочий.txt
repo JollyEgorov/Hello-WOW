@@ -1,0 +1,49 @@
+cmake_minimum_required(VERSION 3.10)
+project(Hello-WOW_portable)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+# Статическая компиляция
+set(CMAKE_EXE_LINKER_FLAGS "-static -static-libgcc -static-libstdc++ -mconsole")
+set(CMAKE_FIND_LIBRARY_SUFFIXES ".a")
+set(BUILD_SHARED_LIBS OFF)
+
+# Кроссплатформенные флаги
+if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+    # Для GCC и Clang
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2 -s -DNDEBUG")
+    if(WIN32)
+        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -municode")
+    endif()
+elseif(MSVC)
+    # Для Visual Studio
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /O2 /MT")
+endif()
+
+
+# Автоматически находим ВСЕ .cpp файлы в текущей папке
+file(GLOB_RECURSE SOURCES "*.cpp")
+
+
+# Автоматически находим ВСЕ .cpp файлы в текущей папке
+file(GLOB_RECURSE HEADERS "*.h")
+
+# Создаем исполняемый файл
+add_executable(Hello-WOW ${SOURCES})
+
+# Дополнительные настройки
+target_compile_features(Hello-WOW PRIVATE cxx_std_17)
+
+if(WIN32)
+    set_target_properties(Hello-WOW PROPERTIES
+        SUFFIX ".exe"
+        OUTPUT_NAME "Hello-WOW"
+    )
+endif()
+
+# Информация о сборке
+message(STATUS "Проект: ${PROJECT_NAME}")
+message(STATUS "Компилятор: ${CMAKE_CXX_COMPILER_ID}")
+message(STATUS "Статическая линковка: включена")
+message(STATUS "Исходных файлов: ${SOURCES}")

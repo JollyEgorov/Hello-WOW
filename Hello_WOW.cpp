@@ -5,9 +5,6 @@
 #include "Battle_System.h"
 #include "Character_creator.h"
 #include "Spawn_monster.h"
-//#include "Spawn_instance.h"
-
-
 
 std::shared_ptr<Player> Spawn_player() {
     GameState::getInstance().resetTurn();
@@ -55,6 +52,9 @@ int main()
         std::cerr << "Enemies now defeated: " << GameState::getInstance().getEnemiesDefeated() << '\n';
     }
     if (GameState::getInstance().getEnemiesDefeated() == 5) std::cout << "Congrats, you've beat the game!\n";
-    else std::cout << "Thank you for playng Hello, WOW!\n";
+    else std::cout << "Thank you for playng Hello, WOW!";
+    std::cout << "Press Enter to exit...";
+    std::cin.get();
+    std::cin.get();
     return 0;
 }

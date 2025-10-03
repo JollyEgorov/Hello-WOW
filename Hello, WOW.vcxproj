@@ -127,11 +127,10 @@
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="Character_creator.cpp" />
     <ClCompile Include="Character_turn.cpp" />
+    <ClCompile Include="Color.cpp" />
     <ClCompile Include="Damage.cpp" />
     <ClCompile Include="Effects.cpp" />
-    <ClCompile Include="Hello, WOW.cpp" />
-    <ClCompile Include="Spawn_instance.h" />
-    <ClCompile Include="Spawn_instance.cpp" />
+    <ClCompile Include="Hello_WOW.cpp" />
     <ClCompile Include="Spawn_monster.cpp" />
     <ClCompile Include="Utility.cpp" />
     <ClCompile Include="Weapons.cpp" />
@@ -141,6 +140,7 @@
     <ClInclude Include="Character.h" />
     <ClInclude Include="Character_creator.h" />
     <ClInclude Include="Character_turn.h" />
+    <ClInclude Include="Color.h" />
     <ClInclude Include="Damage.h" />
     <ClInclude Include="Effects.h" />
     <ClInclude Include="GameState.h" />

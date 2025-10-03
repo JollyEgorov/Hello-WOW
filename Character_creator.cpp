@@ -13,10 +13,13 @@ std::shared_ptr<Player> Character_creation() {
         dexterity_ = 50;
         vitality_ = 50;
     }
-
-    std::cout << GREEN_COLOR << "Dexterity: " << dexterity_ << '\n' << RESET_COLOR;
-    std::cout << RED_COLOR << "Strength: " << strength_ << '\n' << RESET_COLOR;
-    std::cout << YELLOW_COLOR << "Vitality: " << vitality_ << '\n' << RESET_COLOR;
+    ConsoleColor::SetColor(GREEN);
+    std::cout << "Dexterity: " << dexterity_ << '\n';
+    ConsoleColor::SetColor(RED);
+    std::cout << "Strength: " << strength_ << '\n';
+    ConsoleColor::SetColor(YELLOW);
+    std::cout << "Vitality: " << vitality_ << '\n';
+    ConsoleColor::Reset();
 
     std::string player_input;
 
