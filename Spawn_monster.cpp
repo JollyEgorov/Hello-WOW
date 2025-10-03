@@ -1,16 +1,18 @@
 #include "Spawn_monster.h"
 
-
-std::unique_ptr<Character> Monster_creation() {
-	uint64_t hp = 0;
-	uint64_t damage = 0;
-	uint64_t strength = 0;
-	uint64_t dexterity = 0;
-	uint64_t vitality = 0;
+std::shared_ptr<Monster> Monster_creation() {
+	int64_t hp = 0;
+	int64_t damage = 0;
+	int64_t strength = 0;
+	int64_t dexterity = 0;
+	int64_t vitality = 0;
 	MonsterType type = MonsterType::Goblin;
 	Weapon loot(WeaponType::Dagger);
 
-	uint64_t monster_type = Random(0, 5);	//Random enemy
+	int64_t monster_type = Random(0, 5);	//Random enemy
+
+	//monster_type = MonsterType::Skeleton; //SPAWNS only one type of enemies!
+
 	type = MonsterType(monster_type);
 	switch (monster_type) {					//Setting up enemies
 		case MonsterType::Goblin : {
@@ -69,5 +71,5 @@ std::unique_ptr<Character> Monster_creation() {
 		}
 	}
 	std::cout << "Monster " << type << " appears!" << '\n'; //DEBUG?
-	return std::make_unique<Monster>(hp, damage, strength, dexterity, vitality, type, loot);
+	return std::make_shared<Monster>(hp, damage, strength, dexterity, vitality, type, loot);
 }

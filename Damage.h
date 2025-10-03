@@ -1,5 +1,6 @@
 #pragma once
 #include <cstdint>
+#include <iostream>
 
 enum class DamageType {
 	Cutting,
@@ -12,17 +13,21 @@ class Damage {
 public:
 	Damage();
 
-	Damage(const DamageType& dtype, const uint64_t& dvalue);
+	Damage(const DamageType& dtype, const int64_t& dvalue);
 	
-	uint64_t& DValue();
+	int64_t& DValue();
 
 	DamageType& DType();
 
-	const uint64_t& DValue() const;
+	const int64_t& DValue() const;
 
 	const DamageType& DType() const;
 	
 private:
 	DamageType dtype_;
-	uint64_t dvalue_;
+	int64_t dvalue_;
 };
+
+std::ostream& operator << (std::ostream& os, const DamageType dt);
+
+std::ostream& operator << (std::ostream& os, const Damage& d);

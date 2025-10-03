@@ -4,8 +4,10 @@
 #include "Effects.h"
 #include <utility>
 
-bool CalculateHit(std::unique_ptr<Character>& attacker, std::unique_ptr<Character>& defending);
+Damage SubstractDMG(const std::list<Damage>::iterator pos, Damage dblocked);
 
-uint64_t CalculateDMG(std::unique_ptr<Character>& attacker, std::unique_ptr<Character>& defending);
+bool CalculateHit(std::shared_ptr<Character> attacker, std::shared_ptr<Character> defending);
 
-std::pair<Character*, Character*> TurnOrder(std::unique_ptr<Character>& player, std::unique_ptr<Character>& monster);
+int64_t CalculateDMG(std::shared_ptr<Character>& attacker, std::shared_ptr<Character>& defending);
+
+std::pair<std::shared_ptr<Character>, std::shared_ptr<Character>> TurnOrder(std::shared_ptr<Player> player, std::shared_ptr<Monster> monster);

@@ -2,4 +2,4 @@
 #include <memory>
 #include "Character.h"
 
-std::unique_ptr<Character> Character_creation();
+std::shared_ptr<Player> Character_creation();

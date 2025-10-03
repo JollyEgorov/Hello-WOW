@@ -2,10 +2,10 @@
 #include <vector>
 #include <thread>
 #include <chrono>
-#include "Damage.h"
+//#include "Damage.h"
 #include "Character.h"
 #include "Character_turn.h"
 
-void Action(std::unique_ptr<Character>& attacker, std::unique_ptr<Character>& defending);
+void Action(std::shared_ptr<Character> attacker, std::shared_ptr<Character> defending);
 
-std::unique_ptr<Character>& Fight(std::unique_ptr<Character>& player, std::unique_ptr<Character>& monster);
+std::shared_ptr<Character> Fight(std::shared_ptr<Player> player, std::shared_ptr<Monster> monster);

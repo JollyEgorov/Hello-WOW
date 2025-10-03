@@ -1,30 +1,30 @@
 #include "Character.h"
 
-Character::Character() : Strength(0), Dexterity(0), Vitality(0), hp(1), off_effects(), def_effects() {}
+Character::Character() : Strength(0), Dexterity(0), Vitality(0), hp(1), target_effects(), self_effects() {}
 
-Character::Character(const uint64_t& strength_, const uint64_t& dexterity_, const uint64_t& vitality_) : 
-                     Strength(strength_), Dexterity(dexterity_), Vitality(vitality_), hp(1), off_effects(), def_effects() {
+Character::Character(const int64_t strength_, const int64_t dexterity_, const int64_t vitality_) :
+    Strength(strength_), Dexterity(dexterity_), Vitality(vitality_), hp(1), target_effects(), self_effects() {
 }
 
-uint64_t& Character::Str() {
+int64_t& Character::Str() {
     return Strength;
 }
-const uint64_t& Character::Str() const {
+const int64_t& Character::Str() const {
     return Strength;
 }
-uint64_t& Character::Dex() {
+int64_t& Character::Dex() {
     return Dexterity;
 }
-const uint64_t& Character::Dex() const {
+const int64_t& Character::Dex() const {
     return Dexterity;
 }
-uint64_t& Character::Vit() {
+int64_t& Character::Vit() {
     return Vitality;
 }
-const uint64_t& Character::Vit() const {
+const int64_t& Character::Vit() const {
     return Vitality;
 }
-uint64_t& Character::HP() {
+int64_t& Character::HP() {
     return hp;
 }
 
@@ -32,60 +32,34 @@ const std::string Character::GetType() const {
     return "Character";
 }
 
-std::list<EffectType> Character::ActiveOffEffects() {
-    return off_effects;
+std::list<EffectType> Character::ActiveTargetEffects() {
+    return target_effects;
 }
-std::list<EffectType> Character::ActiveDefEffects() {
-    return off_effects;
+std::list<EffectType> Character::ActiveSelfEffects() {
+    return self_effects;
 }
-
-Weapon& Character::CurrentWeapon() {
-    Weapon weapon;
-    return weapon;
-}
-const Weapon& Character::CurrentWeapon() const {
-    Weapon weapon;
-    return weapon;
-}
-
-void Character::LevelUp() { //For Player only
-    return;
-}
-void Character::OfferWeapon(std::unique_ptr<Character>& monster) {// For Player only
-    return;
-}
-const Weapon& Character::Loot() const {    // For Monster only
-    return Weapon();
-}
-const MonsterType& Character::Type() const {
-    return MonsterType::Golem;
-}
-/*
-const uint64_t& Character::Damage() const {
-    return 666; //To check whether this is ever called!
-}*/
 
 Player::Player() : Character(), weapon(), rogue_level(0), warrior_level(0), barbarian_level(0) {}
 
-Player::Player(const uint64_t& strength_, const uint64_t& dexterity_, const uint64_t& vitality_, const CharClass& st_class_)
+Player::Player(const int64_t& strength_, const int64_t& dexterity_, const int64_t& vitality_, const CharClass& st_class_)
     : Character(strength_, dexterity_, vitality_), weapon(), rogue_level(0), warrior_level(0), barbarian_level(0) {
     if (st_class_ == CharClass::Rogue) {
         Weapon w1(WeaponType::Dagger);
         weapon = w1;
         rogue_level = 1;
-        off_effects.insert(end(off_effects), EffectType::enumPoisoned);
+        target_effects.insert(end(target_effects), EffectType::enumBackStab);
     }
     else if (st_class_ == CharClass::Warrior) {
         Weapon w1(WeaponType::Sword);
         weapon = w1;
         warrior_level = 1;
-        off_effects.insert(end(off_effects), EffectType::enumToAction);
+        target_effects.insert(end(target_effects), EffectType::enumToAction);
     }
     else if (st_class_ == CharClass::Barbarian) {
         Weapon w1(WeaponType::Club);
         weapon = w1;
         barbarian_level = 1;
-        off_effects.insert(end(off_effects), EffectType::enumFury);
+        target_effects.insert(end(target_effects), EffectType::enumFury);
     }
     hp = rogue_level * 4 + warrior_level * 5 + barbarian_level * 6 + Vitality;
     std::cout << "You now have " << hp << " hp\n"; //DEBUG?
@@ -94,16 +68,16 @@ Player::Player(const uint64_t& strength_, const uint64_t& dexterity_, const uint
 const std::string Player::GetType() const {
     return "the hero";
 }
-uint64_t& Player::Rogue_level() {
+int64_t& Player::Rogue_level() {
     return rogue_level;
 }
-uint64_t& Player::Warrior_level() {
+int64_t& Player::Warrior_level() {
     return rogue_level;
 }
-uint64_t& Player::Barbarian_level() {
+int64_t& Player::Barbarian_level() {
     return rogue_level;
 }
-const uint64_t Player::TotalLevel() const {
+const int64_t Player::TotalLevel() const {
     return rogue_level + warrior_level + barbarian_level;
 }
 Weapon& Player::CurrentWeapon() {
@@ -128,16 +102,19 @@ void Player::LevelUp() {
             switch (input) {
                 case ('r'): {
                     valid_choice = true;
+                    RogueLevelUp();
                     ++rogue_level;
                     break;
                 }
                 case ('w'): {
                     valid_choice = true;
+                    WarriorLevelUp();
                     ++warrior_level;
                     break;
                 }
                 case ('b'): {
                     valid_choice = true;
+                    void BarbarianLevelUp();
                     ++barbarian_level;
                     break;
                 }
@@ -159,43 +136,83 @@ void Player::LevelUp() {
     return;
 }
 
-void Player::OfferWeapon(std::unique_ptr<Character>& monster) const {// For Player only
+void Player::OfferWeapon(std::shared_ptr<Monster> monster) {
     std::cout << "The enemy drops ";
-    switch (monster->Type()) {
-    case MonsterType::Goblin:
-        std::cout << "a dagger\n";
-        break; 
-    case MonsterType::Skeleton:
-        std::cout << "a club";
-        break;
-    case MonsterType::Slime:
-        std::cout << "a spear";
-        break;
-
-    case MonsterType::Ghost:
-        std::cout << "a sword";
-        break;
-
-    case MonsterType::Golem:
-        std::cout << "an axe";
-        break;
-
-    case MonsterType::Dragon:
-        std::cout << "a legendary sword!";
-        break;
+    if (monster->Type() == MonsterType::Golem) {
+        std::cout << "an ";
     }
-    std::cout << '\n';
+    else std::cout << "a ";
+    std::cout << monster->Loot() << ". ";
+
+    std::cout << "Would you like to use it instead of your weapon? (Y/y for yes, N/n for no)\n";
+    bool incorrect_input = true;
+    while (incorrect_input) {
+        std::string player_input;
+        std::cin >> player_input;
+        if (player_input == "Y" || player_input == "y") {
+            std::cout << "The hero takes the " << monster->Loot() << "." << '\n';
+            weapon = monster->Loot();
+            incorrect_input = false;
+        }
+        else if (player_input == "N" || player_input == "n") {
+            std::cout << "The hero declines to take pathetic srap.\n";
+            incorrect_input = false;
+        }
+        else {
+            std::cout << "Invalid input, please, try again.\n";
+        }
+    }
     return;
 }
 
-const uint64_t Player::PlayerLevel() const {
+const int64_t Player::PlayerLevel() const {
     return rogue_level + warrior_level + barbarian_level;
 }
-
+void Player::RogueLevelUp() {
+    switch (rogue_level) {
+    case 1:
+        Dexterity += 0;
+    case 2:
+        target_effects.push_back(enumPoisoned);
+    }
+}
+void Player::WarriorLevelUp() {
+    switch (warrior_level) {
+    case 1:
+        self_effects.push_back(enumShield);
+    case 2:
+        Strength += 1;
+    }
+}
+void Player::BarbarianLevelUp() {
+    switch (barbarian_level) {
+    case 1:
+        self_effects.push_back(enumStoneSkin);
+    case 2:
+        Vitality += 1;
+    }
+}
 Monster::Monster() : Character(), base_damage(0), type(MonsterType::Goblin), loot(Weapon(WeaponType::Dagger)) {}
 
-Monster::Monster(const uint64_t& hp_, const uint64_t& base_damage_, const uint64_t& strength_, const uint64_t& dexterity_, const uint64_t& vitality_, const MonsterType& type_, const Weapon& loot_)
+Monster::Monster(const int64_t& hp_, const int64_t& base_damage_, const int64_t& strength_, const int64_t& dexterity_, const int64_t& vitality_, const MonsterType& type_, const Weapon& loot_)
                 : Character(strength_, dexterity_, vitality_), base_damage(base_damage_), type(type_), loot(loot_){
+    switch (type) {
+    case MonsterType::Skeleton:
+        self_effects.push_back(enumSkeleton_skill);
+        break;
+    case MonsterType::Slime:
+        self_effects.push_back(enumSlime_skill);
+        break;
+    case MonsterType::Ghost:
+        self_effects.push_back(enumBackStab);
+        break;
+    case MonsterType::Golem:
+        self_effects.push_back(enumStoneSkin);
+        break;
+    case MonsterType::Dragon:
+        self_effects.push_back(enumDragon_skill);
+        break;
+    }
     hp = hp_;
 }
 
@@ -227,14 +244,14 @@ const std::string Monster::GetType() const {
 const MonsterType& Monster::Type() const {
     return type;
 }
-const uint64_t& Monster::Damage() const {
-    return base_damage;
+const Damage Monster::Damage_Value() const {
+    return Damage(DamageType::Pure, base_damage);
 }
 const Weapon& Monster::Loot() const {
     return loot;
 }
 
-std::ostream& operator<<(std::ostream& os, MonsterType type) {//Why can't I move it to the other file?
+std::ostream& operator<<(std::ostream& os, MonsterType type) {
     switch (type) {
     case MonsterType::Goblin: os << "goblin"; break;
     case MonsterType::Skeleton: os << "skeleton"; break;

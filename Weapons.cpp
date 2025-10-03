@@ -1,4 +1,4 @@
-#include "weapons.h"
+#include "Weapons.h"
 
 Weapon::Weapon() : dtype_(DamageType::Cutting), damage_(3), wtype_(WeaponType::Sword) {}
 
@@ -32,10 +32,34 @@ const WeaponType& Weapon::WType() {
 	return wtype_;
 }
 
-const uint64_t& Weapon::DValue() {
+const int64_t& Weapon::DValue() {
 	return damage_;
 }
 
 const DamageType& Weapon::DType() {
 	return dtype_;
+}
+
+std::ostream& operator <<(std::ostream& os, Weapon w) {
+	switch (w.WType()) {
+	case WeaponType::Sword:
+		os << "sword";
+		break;
+	case WeaponType::Club:
+		os << "club";
+		break;
+	case WeaponType::Dagger:
+		os << "dagger";
+		break;
+	case WeaponType::Axe:
+		os << "axe";
+		break;
+	case WeaponType::Spear:
+		os << "spear";
+		break;
+	case WeaponType::SwordLeg:
+		os << "legendary sword";
+		break;
+	}
+	return os;
 }

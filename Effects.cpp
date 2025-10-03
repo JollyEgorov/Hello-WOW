@@ -36,10 +36,12 @@ std::list<Damage> BeautifyEffects(const std::list<Damage>& temp_eff_dmg) {
     result_eff_dmg.push_back(blunt);
     result_eff_dmg.push_back(pure);
 
+    //if (pure.DValue() < 0) std::cerr << "Damage blocked = " << pure << '\n'; //DEBUG
+
     return result_eff_dmg;
 }
 
-std::list<Damage> OffEffectsCheck(std::unique_ptr<Character>& entity, std::unique_ptr<Character>& opposing_entity) {
+std::list<Damage> OffEffectsCheck(std::shared_ptr<Character> entity, std::shared_ptr<Character> opposing_entity) {
     std::list<Damage> result_eff_dmg;
 
     if (!entity || !opposing_entity) {
@@ -49,32 +51,37 @@ std::list<Damage> OffEffectsCheck(std::unique_ptr<Character>& entity, std::uniqu
     //ƒобавл€ем урон от оружи€ (+ значение силы персонажа) 
     if (Player* player = dynamic_cast<Player*>(entity.get())) {
         result_eff_dmg.push_back(Damage(player->CurrentWeapon().DType(), (player->CurrentWeapon().DValue() + player->Str())));
-        std::cerr << "Weapon damage = " << result_eff_dmg.front().DValue() << '\n';
+        //std::cerr << "Weapon damage = " << result_eff_dmg.front().DValue() << '\n';                                             //DEBUG
     }
     else if (Monster* monster = dynamic_cast<Monster*>(entity.get())) {
-        result_eff_dmg.push_back(Damage(DamageType::Pure, monster->Damage()));
-        std::cerr << "Monster damage = " << result_eff_dmg.front().DValue() << '\n';
+        result_eff_dmg.push_back(Damage(DamageType::Pure, (monster->Damage_Value()).DValue() + monster->Str()));
+        //std::cerr << "Monster damage = " << result_eff_dmg.front().DValue() << '\n';          //DEBUG!
     }
     else {
         std::cerr << "Non player/monster character spotted!!!!!!!!!\n";
     }
 
-    if (!entity->ActiveOffEffects().empty()) {
-        for (const auto& effect : entity->ActiveOffEffects()) {
+    if (!entity->ActiveTargetEffects().empty()) {
+        for (const auto& effect : entity->ActiveTargetEffects()) {
             switch (effect) {
-            case EffectType::enumBackStab :
-                result_eff_dmg.push_back(BackStab(*entity, *opposing_entity));
+            case EffectType::enumBackStab:
+                result_eff_dmg.push_back(BackStab(entity, opposing_entity));
                 break;
-            case EffectType::enumPoisoned :
+            case EffectType::enumPoisoned:
                 result_eff_dmg.push_back(Poisoned());
                 break;
-            case EffectType::enumToAction :
-                result_eff_dmg.push_back(ToAction(*entity));
+            case EffectType::enumToAction:
+                if (auto player = dynamic_cast<Player*>(entity.get())) {
+                    result_eff_dmg.push_back(ToAction(player));
+                }
+                else if (auto monster = dynamic_cast<Monster*>(entity.get())) {
+                    result_eff_dmg.push_back(ToAction(monster));
+                }
                 break;
-            case EffectType::enumFury :
+            case EffectType::enumFury:
                 result_eff_dmg.push_back(Fury());
                 break;
-            case EffectType::enumDragon_skill :
+            case EffectType::enumDragon_skill:
                 result_eff_dmg.push_back(Dragon_skill());
                 break;
             default:
@@ -82,19 +89,19 @@ std::list<Damage> OffEffectsCheck(std::unique_ptr<Character>& entity, std::uniqu
             }
         }
     }
-    
+
     return BeautifyEffects(result_eff_dmg);
 }
 
-std::list<Damage> DefEffectsCheck(std::unique_ptr<Character>& entity, std::unique_ptr<Character>& opposing_entity, std::list<Damage>& att_effects) {
+std::list<Damage> DefEffectsCheck(std::shared_ptr<Character> entity, std::shared_ptr<Character> opposing_entity, std::list<Damage>& att_effects) {
     std::list<Damage> result_eff_dmg_red;
 
     if (!entity || !opposing_entity) {
         return result_eff_dmg_red; // nullptr protection
     }
 
-    if (!entity->ActiveDefEffects().empty()) {
-        for (const auto& effect : entity->ActiveDefEffects()) {
+    if (!entity->ActiveSelfEffects().empty()) {
+        for (const auto& effect : entity->ActiveSelfEffects()) {
             switch (effect) {
             case EffectType::enumShield:
                 result_eff_dmg_red.push_back(Shield(*entity, *opposing_entity));
@@ -102,14 +109,9 @@ std::list<Damage> DefEffectsCheck(std::unique_ptr<Character>& entity, std::uniqu
             case EffectType::enumStoneSkin:
                 result_eff_dmg_red.push_back(StoneSkin(*entity));
                 break;
-            case EffectType::enumToAction:
-                result_eff_dmg_red.push_back(ToAction(*entity));
-                break;
             case EffectType::enumSkeleton_skill:
-
-                for (auto& att_effect : att_effects) {
+                for (auto& att_effect : att_effects) {                              //up to <effects number> iterations - now it's 4
                     result_eff_dmg_red.push_back(Skeleton_skill(att_effect));
-                    if (att_effect.DType() == DamageType::Blunt) Skeleton_skill(att_effect); //up to <effects number> iterations - now it's 4
                 }
                 break;
             case EffectType::enumSlime_skill:
@@ -120,24 +122,35 @@ std::list<Damage> DefEffectsCheck(std::unique_ptr<Character>& entity, std::uniqu
             }
         }
     }
+    /*else {                                                                           //DEBUG
+        std::cerr << "No active defensive effects!\n";
+    }*/
+
     return BeautifyEffects(result_eff_dmg_red);
 }
 
-Damage BackStab(const Character& self, const Character& target) {
-    if (self.Dex() > target.Dex()) {
+Damage BackStab(const std::shared_ptr<Character> self, const std::shared_ptr<Character> target) {
+    if (self->Dex() > target->Dex()) {
         return Damage(DamageType::Pure, 1);
     }
     return Damage();
 }
 
 Damage Poisoned() {
-    uint64_t poison_damage = GameState::getInstance().getTurn() - 1;
+    int64_t poison_damage = GameState::getInstance().getTurn() - 1;
+    if (poison_damage < 0) return Damage();
     return Damage(DamageType::Pure, poison_damage);
 }
 
-Damage ToAction(Character& self) { //Weapon needed for skill usage. Weapons can be held only by the player now
-    if (GameState::getInstance().getTurn() == 1) {
-        uint64_t dvalue = self.CurrentWeapon().DValue();
+Damage ToAction(Player* self) { //Weapon needed for skill usage. Weapons can be held only by the player
+    if (GameState::getInstance().getTurn() == 0) {
+        return Damage(DamageType::Pure, self->CurrentWeapon().DValue());
+    }
+    return Damage();
+}
+Damage ToAction(Monster* self) { //Weapon not needed for skill usage. Weapons can be held only by the player
+    if (GameState::getInstance().getTurn() == 0) {
+        int64_t dvalue = self->Damage_Value().DValue();
         return Damage(DamageType::Pure, dvalue);
     }
     return Damage();

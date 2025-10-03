@@ -2,4 +2,4 @@
 #include "Character.h"
 #include "Utility.h"
 
-std::unique_ptr<Character> Monster_creation();
+std::shared_ptr<Monster> Monster_creation();

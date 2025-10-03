@@ -1,10 +1,10 @@
 #include "Spawn_instance.h"
 
-std::unique_ptr<Character> Spawn_player() {
+std::shared_ptr<Player> Spawn_player() {
     GameState::getInstance().resetTurn();
     return Character_creation();
 }
 
-std::unique_ptr<Character> Spawn_monster() {
+std::shared_ptr<Monster> Spawn_monster() {
     return Monster_creation();
 }

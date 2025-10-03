@@ -1,7 +1,8 @@
 #pragma once
 #include "Character_creator.h"
 #include "Spawn_monster.h"
+#include <memory>
 
-std::unique_ptr<Character> Spawn_player();
+std::shared_ptr<Player> Spawn_player();
 
-std::unique_ptr<Character> Spawn_monster();
+std::shared_ptr<Monster> Spawn_monster();

@@ -1,12 +1,18 @@
 #include "Character_creator.h"
 
-std::unique_ptr<Character> Character_creation() {
+std::shared_ptr<Player> Character_creation() {
 
     std::cout << "Your character stats:\n";
 
-    uint64_t strength_ = Random(1, 3);
-    uint64_t dexterity_ = Random(1, 3);
-    uint64_t vitality_ = Random(1, 3);
+    int64_t strength_ = Random(1, 3);
+    int64_t dexterity_ = Random(1, 3);
+    int64_t vitality_ = Random(1, 3);
+    
+    if (false) {                                            //DEV CHEAT!
+        strength_ = 0;
+        dexterity_ = 50;
+        vitality_ = 50;
+    }
 
     std::cout << GREEN_COLOR << "Dexterity: " << dexterity_ << '\n' << RESET_COLOR;
     std::cout << RED_COLOR << "Strength: " << strength_ << '\n' << RESET_COLOR;
@@ -38,6 +44,6 @@ std::unique_ptr<Character> Character_creation() {
         //std::cerr << "st_class_: " << st_class_ << '\n';
     }
 
-    return std::make_unique<Player>(strength_, dexterity_, vitality_, st_class_);
+    return std::make_shared<Player>(strength_, dexterity_, vitality_, st_class_);
     return nullptr;
 }

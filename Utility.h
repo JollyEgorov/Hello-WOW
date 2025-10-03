@@ -8,4 +8,4 @@
 #define GREEN_COLOR		"\033[32m"
 #define YELLOW_COLOR	"\033[33m"
 
-uint64_t Random(const uint64_t& first, const uint64_t& second);
+int64_t Random(const int64_t& first, const int64_t& second);

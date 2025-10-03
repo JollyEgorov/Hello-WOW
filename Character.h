@@ -42,77 +42,71 @@ class Character {
 public:
     Character();
 
-    Character(const uint64_t& strength_, const uint64_t& dexterity_, const uint64_t& vitality_);
+    Character(const int64_t strength_, const int64_t dexterity_, const int64_t vitality_);
 
     virtual ~Character() = default;
 
-    uint64_t& HP();
-    uint64_t& Str();
-    const uint64_t& Str() const;
-    uint64_t& Dex();
-    const uint64_t& Dex() const;
-    uint64_t& Vit();
-    const uint64_t& Vit() const;
+    int64_t& HP();
+    int64_t& Str();
+    const int64_t& Str() const;
+    int64_t& Dex();
+    const int64_t& Dex() const;
+    int64_t& Vit();
+    const int64_t& Vit() const;
     const virtual std::string GetType() const = 0;
-    std::list<EffectType> ActiveOffEffects();
-    std::list<EffectType> ActiveDefEffects();
-
-    virtual Weapon& CurrentWeapon();
-    virtual const Weapon& CurrentWeapon() const;
-
-    virtual void LevelUp();                                         // For Player only
-    virtual void OfferWeapon(std::unique_ptr<Character>& monster);  // For Player only
-    virtual const Weapon& Loot() const;                             // For Monster only
-    virtual const MonsterType& Type() const;                        // For Monster only
-    //const uint64_t& Damage() const;                                 // For Monster only
+    std::list<EffectType> ActiveTargetEffects();
+    std::list<EffectType> ActiveSelfEffects();
 
 protected:
-    uint64_t hp;
-    uint64_t Strength;
-    uint64_t Dexterity;
-    uint64_t Vitality;
-    std::list<EffectType> off_effects;
-    std::list<EffectType> def_effects;
-};
-
-class Player : public Character{
-public:
-    Player();
-    Player(const uint64_t& strength_, const uint64_t& dexterity_, const uint64_t& vitality_, const CharClass& st_class_);
-
-    const std::string GetType() const;
-    uint64_t& Rogue_level();
-    uint64_t& Warrior_level();
-    uint64_t& Barbarian_level();
-    const uint64_t TotalLevel() const;
-    Weapon& CurrentWeapon();
-    const Weapon& CurrentWeapon() const;
-
-    void LevelUp();
-    void OfferWeapon(std::unique_ptr<Character>& monster) const;
-
-private:
-    const uint64_t PlayerLevel() const;
-    uint64_t rogue_level;
-    uint64_t warrior_level;
-    uint64_t barbarian_level;
-    Weapon weapon;
+    int64_t hp;
+    int64_t Strength;
+    int64_t Dexterity;
+    int64_t Vitality;
+    std::list<EffectType> target_effects;
+    std::list<EffectType> self_effects;
 };
 
 class Monster : public Character {
 public:
     Monster();
-    Monster(const uint64_t& hp, const uint64_t& base_damage_, const uint64_t& strength_, const uint64_t& dexterity_, const uint64_t& vitality_, const MonsterType& type_, const Weapon& loot_);
+    Monster(const int64_t& hp, const int64_t& base_damage_, const int64_t& strength_, const int64_t& dexterity_, const int64_t& vitality_, const MonsterType& type_, const Weapon& loot_);
     
     const std::string GetType() const;
     const MonsterType& Type() const;
-    const uint64_t& Damage() const;
+    const Damage Damage_Value() const;
     const Weapon& Loot() const;
 
 private:
-    const uint64_t base_damage;
+    const int64_t base_damage;
     const MonsterType type;
     const Weapon loot;
+};
+
+class Player : public Character{
+public:
+    Player();
+    Player(const int64_t& strength_, const int64_t& dexterity_, const int64_t& vitality_, const CharClass& st_class_);
+    
+    const std::string GetType() const;
+    int64_t& Rogue_level();
+    int64_t& Warrior_level();
+    int64_t& Barbarian_level();
+    const int64_t TotalLevel() const;
+    Weapon& CurrentWeapon();
+    const Weapon& CurrentWeapon() const;
+
+    void LevelUp();
+    void OfferWeapon(std::shared_ptr<Monster> monster);
+
+private:
+    const int64_t PlayerLevel() const;
+    void RogueLevelUp();
+    void WarriorLevelUp();
+    void BarbarianLevelUp();
+    int64_t rogue_level;
+    int64_t warrior_level;
+    int64_t barbarian_level;
+    Weapon weapon;
 };
 
 std::ostream& operator<<(std::ostream& os, MonsterType type);

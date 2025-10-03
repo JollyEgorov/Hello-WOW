@@ -20,12 +20,13 @@ public:
 
 	const WeaponType& WType();
 
-	const uint64_t& DValue();
+	const int64_t& DValue();
 
 	const DamageType& DType();
 
 protected:
-	uint64_t damage_;
+	int64_t damage_;
 	DamageType dtype_;
 	WeaponType wtype_;
 };
+std::ostream& operator <<(std::ostream& os, Weapon w);
