@@ -2,7 +2,7 @@
 
 std::shared_ptr<Player> Character_creation() {
 
-    std::cout << "Your character stats:\n";
+    std::cout << Localization::getInstance().getString("istats") << "\n";
 
     int64_t strength_ = Random(1, 3);
     int64_t dexterity_ = Random(1, 3);
@@ -13,12 +13,16 @@ std::shared_ptr<Player> Character_creation() {
         dexterity_ = 50;
         vitality_ = 50;
     }
+
     ConsoleColor::SetColor(GREEN);
-    std::cout << "Dexterity: " << dexterity_ << '\n';
+    std::cout << Localization::getInstance().getString("istatsdex") << " " << dexterity_ << '\n';
+    //std::cout << "Dexterity: " << dexterity_ << '\n';
     ConsoleColor::SetColor(RED);
-    std::cout << "Strength: " << strength_ << '\n';
+    std::cout << Localization::getInstance().getString("istatsstr") << " " << strength_ << '\n';
+    //std::cout << "Strength: " << strength_ << '\n';
     ConsoleColor::SetColor(YELLOW);
-    std::cout << "Vitality: " << vitality_ << '\n';
+    std::cout << Localization::getInstance().getString("istatsvit") << " " << vitality_ << '\n';
+    //std::cout << "Vitality: " << vitality_ << '\n';
     ConsoleColor::Reset();
 
     std::string player_input;
@@ -26,22 +30,22 @@ std::shared_ptr<Player> Character_creation() {
     CharClass st_class_ = CharClass::None;
     
     while (st_class_ == CharClass::None) {
-        std::cout << "Plesase correctly choose your class: rogue(r), barbarian(b) or warrior(w)\n";
+        std::cout << Localization::getInstance().getString("iclasschoose") << '\n';
         std::cin >> player_input;
         if (player_input == "r" || player_input == "R") {
             st_class_ = CharClass::Rogue;
-            std::cout << "Welcome to the dungeon, nimble rogue!\n";
+            std::cout << Localization::getInstance().getString("mgreetrogue") << "\n";
         }
         else if (player_input == "w" || player_input == "W") {
             st_class_ = CharClass::Warrior;
-            std::cout << "Welcome to the dungeon, mighty warrior!\n";
+            std::cout << Localization::getInstance().getString("mgreetwarrior") << "\n";
         }
         else if (player_input == "b" || player_input == "B") {
             st_class_ = CharClass::Barbarian;
-            std::cout << "Welcome to the dungeon, furious barbarian!\n";
+            std::cout << Localization::getInstance().getString("mgreetbarbarian") << "\n";
         }
         else {
-            std::cout << "Invalid Class input, please try again\n";
+            std::cout << Localization::getInstance().getString("eclasschoose") << "\n";;
         }
         //std::cerr << "player_input: " << player_input << '\n';
         //std::cerr << "st_class_: " << st_class_ << '\n';

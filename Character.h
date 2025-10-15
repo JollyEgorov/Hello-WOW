@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "Utility.h"
+#include "Language.h"
 #include "Weapons.h"
 #include "GameState.h"
 

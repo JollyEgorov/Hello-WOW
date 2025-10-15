@@ -1,6 +1,7 @@
 #pragma once
 #include <cstdint>
 #include "Damage.h"
+#include "Language.h"
 
 enum WeaponType{
 	Sword,

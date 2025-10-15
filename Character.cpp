@@ -28,7 +28,7 @@ int64_t& Character::HP() {
     return hp;
 }
 
-const std::string Character::GetType() const {
+const std::string Character::GetType() const { 
     return "Character";
 }
 
@@ -62,11 +62,11 @@ Player::Player(const int64_t& strength_, const int64_t& dexterity_, const int64_
         target_effects.insert(end(target_effects), EffectType::enumFury);
     }
     hp = rogue_level * 4 + warrior_level * 5 + barbarian_level * 6 + Vitality;
-    std::cout << "You now have " << hp << " hp\n"; //DEBUG?
+    std::cout << Localization::getInstance().getString("ihp0") << hp << Localization::getInstance().getString("ihp1") << '\n'; //DEBUG?
 }
 
-const std::string Player::GetType() const {
-    return "the hero";
+const std::string Player::GetType() const { //Check EVERYWHERE!
+    return Localization::getInstance().getString("thero");
 }
 int64_t& Player::Rogue_level() {
     return rogue_level;
@@ -94,12 +94,12 @@ void Player::LevelUp() {
         bool valid_choice = false;
         while (!valid_choice)
         {
-            std::cout << "Please correctly choose a speciality to progress: rogue(r), warrior(w) or barbarian(b)\n";
+            std::cout  << Localization::getInstance().getString("iclassupchoose") << "\n";
             
             std::cin >> input;
             input = std::tolower(static_cast<unsigned char>(input));
 
-            switch (input) {
+            switch (tolower(input)) {
                 case ('r'): {
                     valid_choice = true;
                     RogueLevelUp();
@@ -114,52 +114,52 @@ void Player::LevelUp() {
                 }
                 case ('b'): {
                     valid_choice = true;
-                    void BarbarianLevelUp();
+                    BarbarianLevelUp();
                     ++barbarian_level;
                     break;
                 }
                 default: {
-                    std::cout << "Invalid choice! Please use (r) for rogue, (w) for warrior or (b) for barbarian.\n";
+                    std::cout << Localization::getInstance().getString("eclasschoose") << '\n';
                     std::cin.clear();
-                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    std::cin.ignore((std::numeric_limits<std::streamsize>::max)(), '\n');
                     break;
                 }
             }
 
             hp = rogue_level * 4 + warrior_level * 5 + barbarian_level * 6 + Vitality;
+            std::cout << Localization::getInstance().getString("ihp0") << hp << Localization::getInstance().getString("ihp1") << '\n';
         }
     }
     else {
-        std::cout << "You have reached the maximum level!\n";
+        std::cout << Localization::getInstance().getString("imaxlvl") << '\n';
     }
-    std::cout << "Your current speciality levels: rogue(" << rogue_level << "), warrior(" << warrior_level << "), barbarian(" << barbarian_level << ")\n";
+    std::cout << Localization::getInstance().getString("icurrlvl0") << rogue_level 
+              << Localization::getInstance().getString("icurrlvl1") << warrior_level 
+              << Localization::getInstance().getString("icurrlvl2") << barbarian_level << ")\n";
     return;
 }
 
 void Player::OfferWeapon(std::shared_ptr<Monster> monster) {
-    std::cout << "The enemy drops ";
-    if (monster->Type() == MonsterType::Golem) {
-        std::cout << "an ";
-    }
-    else std::cout << "a ";
+    std::cout << Localization::getInstance().getString("idrop");
+    
     std::cout << monster->Loot() << ". ";
 
-    std::cout << "Would you like to use it instead of your weapon? (Y/y for yes, N/n for no)\n";
+    std::cout << Localization::getInstance().getString("iofferweapon") << "\n";
     bool incorrect_input = true;
     while (incorrect_input) {
         std::string player_input;
         std::cin >> player_input;
-        if (player_input == "Y" || player_input == "y") {
-            std::cout << "The hero takes the " << monster->Loot() << "." << '\n';
+        if (toLower(player_input) == "y") {
+            std::cout << Localization::getInstance().getString("itakeloot") << monster->Loot() << "." << '\n';
             weapon = monster->Loot();
             incorrect_input = false;
         }
-        else if (player_input == "N" || player_input == "n") {
-            std::cout << "The hero declines to take pathetic srap.\n";
+        else if (toLower(player_input) == "n") {
+            std::cout << Localization::getInstance().getString("idonttakeloot") << '\n';
             incorrect_input = false;
         }
         else {
-            std::cout << "Invalid input, please, try again.\n";
+            std::cout << Localization::getInstance().getString("einvinp") <<"\n";
         }
     }
     return;
@@ -219,25 +219,25 @@ Monster::Monster(const int64_t& hp_, const int64_t& base_damage_, const int64_t&
 const std::string Monster::GetType() const {
     switch (type) {
     case (MonsterType::Goblin):
-        return "goblin";
+        return  Localization::getInstance().getString("tgoblin");
         break;
     case (MonsterType::Skeleton):
-        return "skeleton";
+        return  Localization::getInstance().getString("tskeleton");
         break;
     case (MonsterType::Slime):
-        return "slime";
+        return  Localization::getInstance().getString("tslime");
         break;
     case (MonsterType::Ghost):
-        return "ghost";
+        return  Localization::getInstance().getString("tghost");
         break;
     case (MonsterType::Golem):
-        return "golem";
+        return  Localization::getInstance().getString("tgolem");
         break;
     case (MonsterType::Dragon):
-        return "dragon";
+        return  Localization::getInstance().getString("tdragon");
         break;
     default:
-        return "the monster";
+        return  Localization::getInstance().getString("tmonster");
     }
 }
 
@@ -253,13 +253,13 @@ const Weapon& Monster::Loot() const {
 
 std::ostream& operator<<(std::ostream& os, MonsterType type) {
     switch (type) {
-    case MonsterType::Goblin: os << "goblin"; break;
-    case MonsterType::Skeleton: os << "skeleton"; break;
-    case MonsterType::Slime: os << "slime"; break;
-    case MonsterType::Ghost: os << "ghost"; break;
-    case MonsterType::Golem: os << "golem"; break;
-    case MonsterType::Dragon: os << "dragon"; break;
-    default: os << "Unknown monster!"; break;
+    case MonsterType::Goblin: os << Localization::getInstance().getString("tgoblin"); break;
+    case MonsterType::Skeleton: os << Localization::getInstance().getString("tskeleton"); break;
+    case MonsterType::Slime: os << Localization::getInstance().getString("tslime"); break;
+    case MonsterType::Ghost: os << Localization::getInstance().getString("tghost"); break;
+    case MonsterType::Golem: os << Localization::getInstance().getString("tgolem"); break;
+    case MonsterType::Dragon: os << Localization::getInstance().getString("tdragon"); break;
+    default: os << Localization::getInstance().getString("tumonster"); break;
     }
     return os;
 }

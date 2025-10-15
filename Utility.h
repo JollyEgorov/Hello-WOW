@@ -9,3 +9,5 @@
 #define YELLOW_COLOR	"\033[33m"
 
 int64_t Random(const int64_t& first, const int64_t& second);
+
+std::string toLower(const std::string& str);

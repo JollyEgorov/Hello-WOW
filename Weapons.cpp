@@ -43,22 +43,22 @@ const DamageType& Weapon::DType() {
 std::ostream& operator <<(std::ostream& os, Weapon w) {
 	switch (w.WType()) {
 	case WeaponType::Sword:
-		os << "sword";
+		os << Localization::getInstance().getString("wsword");
 		break;
 	case WeaponType::Club:
-		os << "club";
+		os << Localization::getInstance().getString("wclub");
 		break;
 	case WeaponType::Dagger:
-		os << "dagger";
+		os << Localization::getInstance().getString("wdagger");
 		break;
 	case WeaponType::Axe:
-		os << "axe";
+		os << Localization::getInstance().getString("waxe");
 		break;
 	case WeaponType::Spear:
-		os << "spear";
+		os << Localization::getInstance().getString("wspear");
 		break;
 	case WeaponType::SwordLeg:
-		os << "legendary sword";
+		os << Localization::getInstance().getString("wlegsword");
 		break;
 	}
 	return os;

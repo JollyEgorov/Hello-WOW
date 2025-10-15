@@ -131,6 +131,7 @@
     <ClCompile Include="Damage.cpp" />
     <ClCompile Include="Effects.cpp" />
     <ClCompile Include="Hello_WOW.cpp" />
+    <ClCompile Include="Language.cpp" />
     <ClCompile Include="Spawn_monster.cpp" />
     <ClCompile Include="Utility.cpp" />
     <ClCompile Include="Weapons.cpp" />
@@ -144,9 +145,14 @@
     <ClInclude Include="Damage.h" />
     <ClInclude Include="Effects.h" />
     <ClInclude Include="GameState.h" />
+    <ClInclude Include="Language.h" />
     <ClInclude Include="Spawn_monster.h" />
     <ClInclude Include="Utility.h" />
     <ClInclude Include="Weapons.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="lang\en.lang" />
+    <None Include="lang\ru.lang" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

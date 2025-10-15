@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <iostream>
 
+#include "Language.h"
 #include "Battle_System.h"
 #include "Character_creator.h"
 #include "Spawn_monster.h"
@@ -16,12 +17,13 @@ std::shared_ptr<Monster> Spawn_monster() {
 }
 
 void Defeat(std::shared_ptr<Player> player) {
-    std::cout << "Oh, noble hero, your adventure has come to an end.\n" << "Good luck next time!\n";
+    std::cout << Localization::getInstance().getString("mendadventure0") << '\n'
+              << Localization::getInstance().getString("mendadventure1") << '\n';
     player = nullptr;
 }
 
 bool OfferNG() {
-    std::cout << "Would you like to start a new adventure?(y/n)" << '\n';
+    std::cout << Localization::getInstance().getString("inewadventure") << '\n';
     std::string player_input;
     std::cin >> player_input;
     if (player_input == "y" || player_input == "Y") {
@@ -32,6 +34,7 @@ bool OfferNG() {
 
 int main()
 {   
+    ChooseLanguage();
     std::shared_ptr<Player> player = Spawn_player();
     GameState::getInstance().setEnemiesDefeated() = 0;
     while (GameState::getInstance().getEnemiesDefeated() != 5) {
@@ -49,11 +52,14 @@ int main()
             }
             else break;
         }
-        std::cerr << "Enemies now defeated: " << GameState::getInstance().getEnemiesDefeated() << '\n';
+        std::cout << Localization::getInstance().getString("ienemiesdefeated") << ' ' << GameState::getInstance().getEnemiesDefeated() << '\n';
     }
-    if (GameState::getInstance().getEnemiesDefeated() == 5) std::cout << "Congrats, you've beat the game!\n";
-    else std::cout << "Thank you for playng Hello, WOW!";
-    std::cout << "Press Enter to exit...";
+
+    if (GameState::getInstance().getEnemiesDefeated() == 5) std::cout << Localization::getInstance().getString("mendvictory0") << '\n'
+                                                                      << Localization::getInstance().getString("mendvictory1") << '\n';
+
+    std::cout << Localization::getInstance().getString("iexit") << '\n';
+    
     std::cin.get();
     std::cin.get();
     return 0;

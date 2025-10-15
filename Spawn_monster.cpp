@@ -70,6 +70,7 @@ std::shared_ptr<Monster> Monster_creation() {
 			break;
 		}
 	}
-	std::cout << "Monster " << type << " appears!" << '\n'; //DEBUG?
+	std::cout << Localization::getInstance().getString("ispawnmonster0") << type << Localization::getInstance().getString("ispawnmonster1") << '\n';
+	//std::cout << "Monster " << type << " appears!" << '\n'; //DEBUG?
 	return std::make_shared<Monster>(hp, damage, strength, dexterity, vitality, type, loot);
 }

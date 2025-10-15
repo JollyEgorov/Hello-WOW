@@ -2,16 +2,23 @@
 
 void Action(std::shared_ptr<Character> attacker, std::shared_ptr<Character> defending) {
 	if (CalculateHit(attacker, defending)) {
-		std::cout << attacker->GetType() << " gets a hit on the " << defending->GetType() << "\n"; //DEBUG?
+		
+		std::cout << attacker->GetType() << Localization::getInstance().getString("ihit") << defending->GetType() << "\n"; //DEBUG?
+		
 		int64_t damage_to_hp = CalculateDMG(attacker, defending);
+
 		defending->HP() -= damage_to_hp;
-		std::cout << defending->GetType() << " takes " << damage_to_hp << " damage";
-		if (defending->HP() <= 0) std::cout << " and dies\n";
+
+		std::cout << defending->GetType() << Localization::getInstance().getString("itakedmg0") 
+										  << damage_to_hp 
+										  << Localization::getInstance().getString("itakedmg1");
+
+		if (defending->HP() <= 0) std::cout << Localization::getInstance().getString("idie") << '\n';
 		else std::cout << '\n';
 		std::this_thread::sleep_for(std::chrono::milliseconds(2000));
 		}
 	else {
-		std::cout << attacker->GetType() << " misses " << defending->GetType() << "\n"; //DEBUG?
+		std::cout << attacker->GetType() << Localization::getInstance().getString("imiss") << defending->GetType() << "\n"; //DEBUG?
 		std::this_thread::sleep_for(std::chrono::milliseconds(2000)); 
 	}
 }

@@ -1,0 +1,67 @@
+#i = interface
+
+istatsdex=dexterity
+istatsstr=strength
+istatsvit=vitality
+istats=Your character stats:
+iclasschoose=Plesase correctly choose your class: rogue(r), barbarian(b) or warrior(w)
+inewadventure=Would you like to start a new adventure? (y/n)
+ienemiesdefeated=Enemies now defeated:
+iexit=Press Enter to exit...
+ihit= gets a hit on the 
+itakedmg0= takes 
+itakedmg1= damage
+idie= and dies
+imiss= misses 
+iclassupchoose=Please correctly choose a speciality to progress: rogue(r), warrior(w) or barbarian(b)
+imaxlvl=You have reached the maximum level!
+icurrlvl0=Your current speciality levels: rogue(
+icurrlvl1=), warrior(
+icurrlvl2=), barbarian(
+idrop=The enemy drops 
+iofferweapon=Would you like to use it instead of your weapon? (y/n)
+itakeloot=The hero takes the 
+idonttakeloot=The hero declines to take pathetic srap.
+ispawnmonster0=Monster 
+ispawnmonster1= apppears!
+ihp0=You now have 
+ihp1= hp
+
+#s - status
+
+#m - message
+mgreetrogue=Welcome to the dungeon, nimble rogue!
+mgreetbarbarian=Welcome to the dungeon, furious barbarian!
+mgreetrogue=Welcome to the dungeon, mighty warrior!
+mendadventure0=Oh, noble hero, your adventure has come to an end.
+mendadventure1=Good luck next time!
+mendvictory0=Congrats, you've beat the game!
+mendvictory1=Thank you for playng Hello, WOW!
+
+#t - type
+trogue=rogue
+twarrior=warrior
+tbarbarian=barbarian
+thero=the hero
+tgoblin=goblin
+tskeleton=skeleton
+tslime=slime
+tghost=ghost
+tgolem=golem
+tdragon=dragon
+tmonster=monster
+tumonster=Unknown monster!
+
+#w - weapons
+wsword=a sword
+wdagger=a dagger
+wspear=a spear
+wclub=club
+waxe=an axe
+wlegsword=the legendary sword!
+
+#e - error
+eclasschoose=Invalid class input. Please try again
+einvinp=Invalid input, please, try again.
+
+# Localization::getInstance().getString("")
