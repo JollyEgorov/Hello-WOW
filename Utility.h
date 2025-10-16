@@ -2,6 +2,8 @@
 #include <cstdlib>
 #include <iostream>
 #include <random>
+#include <algorithm>
+#include <cctype>
 
 #define RESET_COLOR		"\033[0m"
 #define RED_COLOR		"\033[31m"

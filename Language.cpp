@@ -63,16 +63,15 @@ void ChooseLanguage() {
         if (toLower(input) == "en") {
             lang = Language::Eng;
             Localization::getInstance().setLanguage("en");
-            std::cerr << "Welcome to HELLO-WOW!\n";
         }
         else if (toLower(input) == "ru") {
             SetConsoleOutputCP(CP_UTF8);
             lang = Language::Rus;
             Localization::getInstance().setLanguage("ru");
-            std::cout <<  u8"Добро пожаловать в HELLO-WOW!\n";
         }
         else {
             std::cout << "Incorrect language input, please try again\n";
         }
     }
+    std::cout << Localization::getInstance().getString("mgreet") << '\n';
 }
