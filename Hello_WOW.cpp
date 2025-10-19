@@ -6,6 +6,7 @@
 #include "Battle_System.h"
 #include "Character_creator.h"
 #include "Spawn_monster.h"
+#include "ConsoleSetup.h"
 
 std::shared_ptr<Player> Spawn_player() {
     GameState::getInstance().resetTurn();
@@ -34,6 +35,7 @@ bool OfferNG() {
 
 int main()
 {   
+    setConsoleTitle("Hello, WOW!");
     ChooseLanguage();
     std::shared_ptr<Player> player = Spawn_player();
     GameState::getInstance().setEnemiesDefeated() = 0;

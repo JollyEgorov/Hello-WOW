@@ -128,6 +128,7 @@
     <ClCompile Include="Character_creator.cpp" />
     <ClCompile Include="Character_turn.cpp" />
     <ClCompile Include="Color.cpp" />
+    <ClCompile Include="ConsoleSetup.cpp" />
     <ClCompile Include="Damage.cpp" />
     <ClCompile Include="Effects.cpp" />
     <ClCompile Include="Hello_WOW.cpp" />
@@ -142,6 +143,7 @@
     <ClInclude Include="Character_creator.h" />
     <ClInclude Include="Character_turn.h" />
     <ClInclude Include="Color.h" />
+    <ClInclude Include="ConsoleSetup.h" />
     <ClInclude Include="Damage.h" />
     <ClInclude Include="Effects.h" />
     <ClInclude Include="GameState.h" />

@@ -51,6 +51,9 @@
     <ClCompile Include="Language.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="ConsoleSetup.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Utility.h">
@@ -87,6 +90,9 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="Battle_System.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="ConsoleSetup.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
